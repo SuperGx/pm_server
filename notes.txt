@@ -1,0 +1,4 @@
+ca sa iti intoarca prin json date, iti trebuie getteri la campurile pe care vrei sa le trimit
+@SpringBootApplication ca sa iti ruleze din main controlleru
+byte array se trimite prin json ca si string de Base64 encoded
+
