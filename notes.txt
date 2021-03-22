@@ -8,3 +8,5 @@ pentru a fi mai usor aplicatiilor care vor sa imi foloseasca serverul sa nu fie 
 
 OAuth2 pentru logare
 
+Cine face hashingul pentru autentificare Clientul sau Serverul?
+
