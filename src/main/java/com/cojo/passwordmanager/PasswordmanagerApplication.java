@@ -1,13 +1,14 @@
 package com.cojo.passwordmanager;
 
-import org.springframework.boot.SpringApplication;
-
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 
 public class PasswordmanagerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MainController.class, args);
+    public static void main(String[] args) {
+        
+        Class<?>[] sources = {MainController.class, UserController.class };
+        new SpringApplicationBuilder().sources(sources).run(args);
 	}
 }
 

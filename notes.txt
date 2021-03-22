@@ -2,3 +2,9 @@ ca sa iti intoarca prin json date, iti trebuie getteri la campurile pe care vrei
 @SpringBootApplication ca sa iti ruleze din main controlleru
 byte array se trimite prin json ca si string de Base64 encoded
 
+se face encryption decryption la nivel de client
+datele in tabela o sa fie inserate deja criptate bulk (nu fac split pe user, pass, domain etc) 
+pentru a fi mai usor aplicatiilor care vor sa imi foloseasca serverul sa nu fie nevoie sa se muleze pe modelul meu de obiect
+
+OAuth2 pentru logare
+
