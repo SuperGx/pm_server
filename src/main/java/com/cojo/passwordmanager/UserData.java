@@ -1,19 +1,25 @@
 package com.cojo.passwordmanager;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+
+import org.springframework.lang.NonNull;
 
 @Entity
-@Table(name = "user")
 public class UserData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @NonNull
+    private Long uid;
 
     private String firstName;
     private String lastName;
@@ -21,6 +27,9 @@ public class UserData {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(targetEntity=EncryptedData.class, cascade = CascadeType.ALL)
+    private Set<EncryptedData> encryptedData;
 
     public UserData() {
     }
@@ -49,8 +58,16 @@ public class UserData {
         return password;
     }
 
+    public Long getUid() {
+        return uid;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<EncryptedData> getEncryptedData() {
+        return encryptedData;
     }
     
   //getter and setter

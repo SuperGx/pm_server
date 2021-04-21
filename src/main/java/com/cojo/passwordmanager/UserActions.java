@@ -1,6 +1,5 @@
 package com.cojo.passwordmanager;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
@@ -17,6 +16,7 @@ public class UserActions implements UserActionsInterface{
             throw new UserAlreadyExistException("User already exists for this email");
         }
         // returns true or false if save is successful
+        System.out.println("User creat!");
         return userDataRepository.save(userData) !=null ? true : false;
     }
 

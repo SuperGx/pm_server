@@ -3,10 +3,12 @@ package com.cojo.passwordmanager;
 
 import java.util.List;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
-    private final EncryptedDataRepository repository;
+    @Autowired
+    private EncryptedDataRepository repository;
 
-    MainController(EncryptedDataRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private UserDataRepository userRepository;
 
 
     @GetMapping("/passwords")
     ResponseEntity<List<EncryptedData>> all() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.findAll());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.findByUserDataEmail(getLoggedUserEmail()));
     }
 
     @GetMapping("/passwords/{id}")
@@ -41,6 +43,7 @@ public class MainController {
     ResponseEntity<EncryptedData> insertEncryptedData(@RequestParam(value = "content") String content) 
     {
         EncryptedData eData = new EncryptedData(content);
+        eData.setUserData(userRepository.findByEmail(getLoggedUserEmail()));
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(eData));
     }
     @PutMapping("/passwords/{id}")
@@ -61,4 +64,17 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
+
+    String getLoggedUserEmail()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = null;
+        if (principal instanceof UserDetails) {
+             email = ((UserDetails) principal).getUsername();
+         } else {
+             email = principal.toString();
+         }
+        System.out.println("Emailul useruilui: " + email);
+        return email;
+    }
 }

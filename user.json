@@ -1,6 +1,6 @@
     {   
     "firstName" : "jhon",   
     "lastName"  : "smith",
-    "email"   : "employee@gmail.com",
-    "password" : "111="
+    "email"   : "a@gmail.com",
+    "password" : "$2a$10$HiLyIRXQMbc5sdihBZtxyelAxHqLvLetdgyhBnguPn5Igbfyqi2yi"
     }

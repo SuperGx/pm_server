@@ -8,5 +8,8 @@ pentru a fi mai usor aplicatiilor care vor sa imi foloseasca serverul sa nu fie 
 
 OAuth2 pentru logare
 
-Cine face hashingul pentru autentificare Clientul sau Serverul?
+Cine face hashingul pentru autentificare Clientul sau Serverul? clientul boss
 
+Pentru a face autentificare, se foloseste httpbasic. Aici punem in header un base64. Putem sa il configuram dupa.
+
+Hai sa trecem la https.

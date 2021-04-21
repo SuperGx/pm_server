@@ -2,9 +2,12 @@ package com.cojo.passwordmanager;
 
 import java.security.SecureRandom;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -14,6 +17,10 @@ public class EncryptedData {
     @Id
     @GeneratedValue
     Long id;
+
+    @ManyToOne(targetEntity = UserData.class, cascade= CascadeType.ALL)
+    @JoinColumn(name = "email")
+    private UserData userData;
 
     public EncryptedData(String encrypted_data) {
         some_random_number = generateRandomNumber();
@@ -52,4 +59,10 @@ public class EncryptedData {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void setUserData(UserData userData) {
+        this.userData = userData;
+    }
+
+    
 }
