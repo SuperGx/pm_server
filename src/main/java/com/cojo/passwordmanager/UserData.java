@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.lang.NonNull;
 
@@ -30,6 +31,9 @@ public class UserData {
 
     @OneToMany(targetEntity=EncryptedData.class, cascade = CascadeType.ALL)
     private Set<EncryptedData> encryptedData;
+
+    @OneToMany(targetEntity=UserToken.class, cascade = CascadeType.ALL)
+    private Set<UserToken> userToken;
 
     public UserData() {
     }
@@ -69,6 +73,9 @@ public class UserData {
     public Set<EncryptedData> getEncryptedData() {
         return encryptedData;
     }
+
+    public Set<UserToken> getUserToken() {
+        return userToken;
+    }
     
-  //getter and setter
 }

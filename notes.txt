@@ -12,4 +12,33 @@ Cine face hashingul pentru autentificare Clientul sau Serverul? clientul boss
 
 Pentru a face autentificare, se foloseste httpbasic. Aici punem in header un base64. Putem sa il configuram dupa.
 
+
+Pentru reset password: 
+    1. facem o tabela pentru tokeni de reset
+    2. generam un token cu secure random
+    3. trimitem userului pe mail linku cu tokenu
+    4. da click si facem reset cautand dupa tokenul respectiv
+    5. stergem tokenu
+
 Hai sa trecem la https.
+
+daca nu mergi pe https in android o sa iti dea eroare de securitate
+generat keystore
+am generat un self-signed certificat
+am dat requireSecure la websecurity
+
+self-signed certificat nu e trusted in android
+am downloadat si copiat certificatul meu in android
+tre sa pui si ipul pe care lucrezi
+l-am pus intr-o functie de trust pentru volley
+
+don't use trustall to protect against man in the middle
+
+
+
+Care e diferenta intre body si params (cum e mai bine si frumos?)
+
+-ext SAN=IP:192.168.13.14
+CN=192.168.13.14
+
+keytool -genkeypair -alias pwdmngr -keyalg RSA -keysize 2048 -ext SAN=IP:192.168.13.14 -storetype PKCS12 -keystore keystore.p12 -validity 3650 -storepass password

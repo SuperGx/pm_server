@@ -3,6 +3,8 @@ package com.cojo.passwordmanager;
 
 import java.util.List;
 
+import com.cojo.passwordmanager.util.UserHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -28,10 +30,13 @@ public class MainController {
     @Autowired
     private UserDataRepository userRepository;
 
+    @Autowired
+    private UserHelper helper;
+
 
     @GetMapping("/passwords")
     ResponseEntity<List<EncryptedData>> all() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.findByUserDataEmail(getLoggedUserEmail()));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.findByUserDataEmail(helper.getLoggedUserEmail()));
     }
 
     @GetMapping("/passwords/{id}")
@@ -43,7 +48,7 @@ public class MainController {
     ResponseEntity<EncryptedData> insertEncryptedData(@RequestParam(value = "content") String content) 
     {
         EncryptedData eData = new EncryptedData(content);
-        eData.setUserData(userRepository.findByEmail(getLoggedUserEmail()));
+        eData.setUserData(userRepository.findByEmail(helper.getLoggedUserEmail()));
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(eData));
     }
     @PutMapping("/passwords/{id}")
@@ -62,19 +67,5 @@ public class MainController {
     {
         repository.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-    
-
-    String getLoggedUserEmail()
-    {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = null;
-        if (principal instanceof UserDetails) {
-             email = ((UserDetails) principal).getUsername();
-         } else {
-             email = principal.toString();
-         }
-        System.out.println("Emailul useruilui: " + email);
-        return email;
     }
 }
