@@ -45,28 +45,38 @@ public class MainController {
     }
 
     @PostMapping("/passwords")
-    ResponseEntity<EncryptedData> insertEncryptedData(@RequestParam(value = "content") String content)
+    ResponseEntity<?> insertEncryptedData(@RequestBody EncryptedData encryptedData)
     {
-        EncryptedData eData = new EncryptedData(content);
-        eData.setUserData(userRepository.findByEmail(helper.getLoggedUserEmail()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(eData));
+        encryptedData.setUserData(userRepository.findByEmail(helper.getLoggedUserEmail()));
+        repository.save(encryptedData);
+        response.setMessage("Passwords created!");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     @PutMapping("/passwords/{id}")
-    ResponseEntity<EncryptedData> updateEncryptedData(@PathVariable Long id ,@RequestParam(value = "content") String content)
-    {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            repository.findById(id).map(data -> {
-            data.setEncrypted_data(content);
-            data.setSome_random_number();
-            return repository.save(data);
-        }).orElseThrow());
+    ResponseEntity<?> updateEncryptedData(@PathVariable Long id ,@RequestBody EncryptedData encryptedData) {
+        EncryptedData encryptedDataDB = repository.findById(id).orElseThrow();
+        if(encryptedDataDB.verifyRequesterEmail()) {
+            encryptedDataDB.setEncrypted_data(encryptedData.getEncrypted_data());
+            repository.save(encryptedDataDB);
+        } else {
+            response.setMessage("Cannot update for this user!");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        response.setMessage("Password updated!");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     
     @DeleteMapping("/passwords/{id}")
-    ResponseEntity<Object> deleteData(@PathVariable Long id)
-    {
-        repository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    ResponseEntity<?> deleteData(@PathVariable Long id) {
+        EncryptedData encryptedDataDB = repository.findById(id).orElseThrow();
+        if(encryptedDataDB.verifyRequesterEmail()) {
+            repository.deleteById(id);
+        } else {
+            response.setMessage("Cannot delete for this user!");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        response.setMessage("Password deleted!");
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/mfakey")

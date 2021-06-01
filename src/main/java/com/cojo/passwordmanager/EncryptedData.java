@@ -1,5 +1,7 @@
 package com.cojo.passwordmanager;
 
+import com.cojo.passwordmanager.util.UserHelper;
+
 import java.security.SecureRandom;
 
 import javax.persistence.*;
@@ -25,6 +27,12 @@ public class EncryptedData {
 
     public EncryptedData()
     {
+    }
+
+    public boolean verifyRequesterEmail() {
+        UserHelper userHelper = new UserHelper();
+        String loggedUserEmail = userHelper.getLoggedUserEmail();
+        return loggedUserEmail.equals(userData.getEmail());
     }
 
     private Integer generateRandomNumber() {
