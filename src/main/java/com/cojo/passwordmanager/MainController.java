@@ -3,6 +3,7 @@ package com.cojo.passwordmanager;
 
 import java.util.List;
 
+import com.cojo.passwordmanager.util.Response;
 import com.cojo.passwordmanager.util.UserHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @SpringBootApplication
@@ -33,6 +28,11 @@ public class MainController {
     @Autowired
     private UserHelper helper;
 
+    @Autowired
+    private KeyDataRepository keyDataRepository;
+
+    @Autowired
+    private Response response;
 
     @GetMapping("/passwords")
     ResponseEntity<List<EncryptedData>> all() {
@@ -45,7 +45,7 @@ public class MainController {
     }
 
     @PostMapping("/passwords")
-    ResponseEntity<EncryptedData> insertEncryptedData(@RequestParam(value = "content") String content) 
+    ResponseEntity<EncryptedData> insertEncryptedData(@RequestParam(value = "content") String content)
     {
         EncryptedData eData = new EncryptedData(content);
         eData.setUserData(userRepository.findByEmail(helper.getLoggedUserEmail()));
@@ -67,5 +67,17 @@ public class MainController {
     {
         repository.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/mfakey")
+    ResponseEntity<?> storeMFAKey(@RequestBody KeyData keyData) {
+        keyDataRepository.save(keyData);
+        response.setMessage("Key Created!");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/mfakey")
+    ResponseEntity<KeyData> getMFAKey() {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(keyDataRepository.findByKeymail(helper.getLoggedUserEmail()));
     }
 }

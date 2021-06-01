@@ -2,16 +2,12 @@ package com.cojo.passwordmanager;
 
 import java.security.SecureRandom;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 
 @Entity
 public class EncryptedData {
+    @Lob
     String encrypted_data;
     Integer some_random_number;
     @Id
