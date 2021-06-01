@@ -42,3 +42,8 @@ Care e diferenta intre body si params (cum e mai bine si frumos?)
 CN=192.168.13.14
 
 keytool -genkeypair -alias pwdmngr -keyalg RSA -keysize 2048 -ext SAN=IP:192.168.13.14 -storetype PKCS12 -keystore keystore.p12 -validity 3650 -storepass password
+
+
+basic auth cu:
+
+bcrypt(sha(password)) --> pentru a trimite in header sha-ul
