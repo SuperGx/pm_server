@@ -16,7 +16,7 @@ public class EncryptedData {
     @GeneratedValue
     Long id;
 
-    @ManyToOne(targetEntity = UserData.class, cascade= CascadeType.ALL)
+    @ManyToOne(targetEntity = UserData.class)
     @JoinColumn(name = "email")
     private UserData userData;
 
