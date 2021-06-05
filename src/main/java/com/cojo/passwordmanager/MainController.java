@@ -32,6 +32,9 @@ public class MainController {
     private KeyDataRepository keyDataRepository;
 
     @Autowired
+    private BioDataRepository bioDataRepository;
+
+    @Autowired
     private Response response;
 
     @GetMapping("/passwords")
@@ -90,4 +93,17 @@ public class MainController {
     ResponseEntity<KeyData> getMFAKey() {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(keyDataRepository.findByKeymail(helper.getLoggedUserEmail()));
     }
+
+    @PostMapping("/biokey")
+    ResponseEntity<?> storeBioKey(@RequestBody BioData bioData) {
+        bioDataRepository.save(bioData);
+        response.setMessage("Bio key Created!");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/biokey/{email}")
+    ResponseEntity<BioData> getBioKey(@PathVariable String email) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bioDataRepository.findByBiomail(email));
+    }
+
 }
