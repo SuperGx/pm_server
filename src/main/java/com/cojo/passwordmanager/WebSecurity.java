@@ -48,7 +48,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
+        //http.headers().frameOptions().disable();
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login", "/register", "/forgot-password", "/reset-password*").permitAll()
                 .antMatchers(HttpMethod.GET, "/biokey/{email}").permitAll()
